@@ -2,7 +2,6 @@ import pygame
 
 
 class Audio:
-
     def __init__(self):
         pygame.init()
         clock = pygame.time.Clock()

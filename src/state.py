@@ -13,6 +13,10 @@ class State:
         self.sentences = []
 
     def run(self, file):
+        """
+        Запускает парсер и музыку
+        :param file: путь до .kar файла
+        """
         self.file = file
         parser = Parser(file)
         self.track_name = os.path.basename(file)
@@ -24,4 +28,3 @@ class State:
 
     def stop(self):
         self.audio.stop()
-

@@ -44,7 +44,9 @@ class Karaoke(QWidget):
 
     def start(self):
         self.clear()
-        file = QFileDialog.getOpenFileName(self, "Открыть .kar файл", "", "Караоке (*.kar)")[0]
+        file = QFileDialog.getOpenFileName(
+            self, "Открыть .kar файл", "", "Караоке (*.kar)"
+        )[0]
         if not file:
             return
         self.state.run(file)
@@ -64,7 +66,7 @@ class Karaoke(QWidget):
 
     def highlight_word(self, word):
         text = self.lyricsLabel.text()
-        text = text.replace(word, "<font color=\"#AE5D5D\"; >{}</font>".format(word))
+        text = text.replace(word, '<font color="#AE5D5D"; >{}</font>'.format(word))
         self.lyricsLabel.setText(text)
 
 
@@ -81,7 +83,7 @@ class KaraokeWindow(QMainWindow):
 
         self.setObjectName("window")
         self.setStyleSheet("#window { background-image: url(images/background.jpg); }")
-        self.setWindowTitle('Караоке')
+        self.setWindowTitle("Караоке")
         self.resize(600, 600)
         self.center()
         self.show()
@@ -89,5 +91,6 @@ class KaraokeWindow(QMainWindow):
     def center(self):
         screen = QDesktopWidget().screenGeometry()
         size = self.geometry()
-        self.move((screen.width() - size.width()) / 2,
-                  (screen.height() - size.height()) / 2)
+        self.move(
+            (screen.width() - size.width()) / 2, (screen.height() - size.height()) / 2
+        )
