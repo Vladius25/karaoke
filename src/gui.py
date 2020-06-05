@@ -3,7 +3,7 @@ from time import sleep
 
 from PyQt5 import uic
 from PyQt5.QtCore import Qt, QBasicTimer, QTimer, QThread, pyqtSignal
-from PyQt5.QtWidgets import QMainWindow, QDesktopWidget, QWidget, QFileDialog
+from PyQt5.QtWidgets import QMainWindow, QDesktopWidget, QWidget, QFileDialog, QSizePolicy
 from PyQt5.uic.properties import QtCore
 
 from src import Signals
@@ -36,6 +36,7 @@ class Karaoke(QWidget):
 
         self.state = state
 
+        self.open.setSizePolicy(QSizePolicy.MinimumExpanding, QSizePolicy.MinimumExpanding)
         self.verticalLayout.setAlignment(Qt.AlignHCenter)
         self.open.clicked.connect(self.start)
         self.setFocusPolicy(Qt.StrongFocus)
