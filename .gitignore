@@ -1,0 +1,15 @@
+# Compiled sources #
+####################
+*.com
+*.class
+*.dll
+*.exe
+*.o
+*.so
+*.pyc
+*.sublime-project
+*.sublime-workspace
+####################
+.idea
+venv
+library
