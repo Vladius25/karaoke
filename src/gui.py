@@ -2,17 +2,27 @@ import functools
 from time import sleep
 
 from PyQt5 import uic
-from PyQt5.QtCore import Qt, QBasicTimer, QTimer, QThread
+from PyQt5.QtCore import Qt, QBasicTimer, QTimer, QThread, pyqtSignal
 from PyQt5.QtWidgets import QMainWindow, QDesktopWidget, QWidget, QFileDialog
 from PyQt5.uic.properties import QtCore
 
+from src import Signals
 from src.state import State
 
 
 class Thread(QThread):
-    def __init__(self, sentences_with_timings):
+    def __init__(self, state, signal):
         super().__init__()
-        self.sentences_with_timings = sentences_with_timings
+        self.state = state
+        self.signal = signal
+
+    def run(self):
+        for i, sentence in enumerate(self.state.sentences):
+            self.signal.need_sentences.emit(sentence)
+            for word, time in self.state.words_with_timings[i]:
+                self.signal.need_word_highlight.emit(word)
+                sleep(time)
+        self.signal.need_sentences.emit("")
 
 
 class Karaoke(QWidget):
@@ -20,48 +30,41 @@ class Karaoke(QWidget):
         super().__init__(parent)
         uic.loadUi("src/karaoke.ui", self)
 
+        self.signals = Signals.Signals()
+        self.signals.need_sentences.connect(self.show_sentences)
+        self.signals.need_word_highlight.connect(self.highlight_word)
+
         self.state = state
-        self.timer = QTimer()
 
         self.verticalLayout.setAlignment(Qt.AlignHCenter)
         self.open.clicked.connect(self.start)
         self.setFocusPolicy(Qt.StrongFocus)
+
+        self.thread = None
 
     def start(self):
         self.clear()
         file = QFileDialog.getOpenFileName(self, "Открыть .kar файл", "", "Караоке (*.kar)")[0]
         if not file:
             return
-        sentences_with_timings = self.state.run(file)
+        self.state.run(file)
         self.title_label.setText(self.state.track_name)
-        delay = 0
-        for pair in sentences_with_timings:
-            delay += pair[1] * 1000
-            timer_callback = functools.partial(self.show_sentence, sentence=pair[0])
-            self.timer.singleShot(delay, timer_callback)
+        self.thread = Thread(self.state, self.signals)
+        self.thread.start()
 
     def clear(self):
-        self.timer.stop()
         self.lyricsLabel.setText("")
         self.title_label.setText("Ничего не играет")
-        self.timer = QTimer()
+        self.state.stop()
+        if self.thread:
+            self.thread.terminate()
 
-    def show_sentence(self, sentence):
-        text = ""
-        for pair in sentence:
-            text += pair[0] + " "
-        print(text)
-        self.lyricsLabel.setText(text)
-        word_delay = 0
-        for word_timeout in sentence:
-            word_delay += word_timeout[1] * 1000
-            timer_callback = functools.partial(self.highlight_word, word=word_timeout[0])
-            self.timer.singleShot(word_delay, timer_callback)
+    def show_sentences(self, sentence):
+        self.lyricsLabel.setText(sentence)
 
     def highlight_word(self, word):
         text = self.lyricsLabel.text()
-        text.replace(word, "<font color=\"#AE5D5D\"; >{}</font>".format(word))
-        print(1)
+        text = text.replace(word, "<font color=\"#AE5D5D\"; >{}</font>".format(word))
         self.lyricsLabel.setText(text)
 
 
@@ -78,7 +81,7 @@ class KaraokeWindow(QMainWindow):
 
         self.setObjectName("window")
         self.setStyleSheet("#window { background-image: url(images/background.jpg); }")
-        self.setWindowTitle('Karaoke')
+        self.setWindowTitle('Караоке')
         self.resize(600, 600)
         self.center()
         self.show()

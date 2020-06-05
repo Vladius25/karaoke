@@ -14,8 +14,8 @@ class Parser:
     def parse(self):
         self.process()
         self.remove_comments()
-        words_with_timings = self.make_words()
-        return self.make_sentences(words_with_timings)
+        words_with_timings = self.split_words_by_sentences(self.make_words_with_timings())
+        return words_with_timings, self.make_sentences(words_with_timings)
 
     def process(self):
         tempo = 500000
@@ -48,7 +48,7 @@ class Parser:
             delta += self.delta_times.pop(0)
         self.delta_times[0] += delta
 
-    def make_words(self):
+    def make_words_with_timings(self):
         data = list(zip(self.syllables, self.delta_times))
         word, time, result = "", 0, []
         for i, pair in enumerate(data):
@@ -59,12 +59,30 @@ class Parser:
                 word, time = "", 0
         return result
 
-    def make_sentences(self, words_with_timings):
-        sentence, time, result = [], 0, []
-        for pair in words_with_timings:
-            if pair[0].startswith(("\\", "/")):
-                result.append((sentence, time))
-                sentence, time = [], 0
-            sentence.append((re.sub(r'[\\/]', '', pair[0].strip()), pair[1]))
-            time += pair[1]
+    def split_words_by_sentences(self, words_with_timings):
+        result, sentence = [], []
+        for word, timing in words_with_timings:
+            if word.startswith(("\\", "/")):
+                result.append(sentence)
+                sentence = []
+            sentence.append((re.sub(r'[\\/]', '', word.strip()), timing))
         return result[1:]
+
+    # def make_sentences_with_timings(self, words_with_timings):
+    #     sentence, time, result = [], 0, []
+    #     for pair in words_with_timings:
+    #         if pair[0].startswith(("\\", "/")):
+    #             result.append((sentence, time))
+    #             sentence, time = [], 0
+    #         sentence.append((re.sub(r'[\\/]', '', pair[0].strip()), pair[1]))
+    #         time += pair[1]
+    #     return result[1:]
+
+    def make_sentences(self, words_with_timings):
+        sentences = []
+        for sentence in words_with_timings:
+            res = ""
+            for word, _ in sentence:
+                res += word + " "
+            sentences.append(res)
+        return sentences
