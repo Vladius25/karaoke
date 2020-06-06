@@ -41,3 +41,16 @@ def get_ticks(file):
             break
     file.seek(-1, os.SEEK_CUR)
     return int(delta_time, 2)
+
+
+def is_midi_file(file):
+    """
+    Проверяет, является ли файл валидным midi файлом
+    :param path:
+    :return: bool
+    """
+    try:
+        mido.MidiFile(file)
+    except (OSError, EOFError):
+        return False
+    return True

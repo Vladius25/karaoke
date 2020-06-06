@@ -1,7 +1,7 @@
 import os
 import unittest
 
-from src.processor import get_syllable, get_ticks, get_ticks_before_lyrics
+from src.processor import get_syllable, get_ticks, get_ticks_before_lyrics, is_midi_file
 
 
 class ProcessorTest(unittest.TestCase):
@@ -30,3 +30,9 @@ class ProcessorTest(unittest.TestCase):
             self.assertEqual(264, num)
         if os.path.exists("file.txt"):
             os.remove("file.txt")
+
+    def test_is_midi_file(self):
+        self.assertTrue(is_midi_file("testing.kar"))
+        with open("file.txt", "wb") as f:
+            f.write(b"\xFF\x01")
+        self.assertFalse(is_midi_file("file.txt"))

@@ -12,15 +12,13 @@ class State:
         self.words_with_timings = []
         self.sentences = []
 
-    def run(self, file):
+    def run(self):
         """
         Запускает парсер и музыку
-        :param file: путь до .kar файла
         """
-        self.file = file
-        parser = Parser(file)
-        self.track_name = os.path.basename(file)
-        self.play(file)
+        parser = Parser(self.file)
+        self.track_name = os.path.basename(self.file)
+        self.play(self.file)
         self.words_with_timings, self.sentences = parser.parse()
 
     def play(self, file):

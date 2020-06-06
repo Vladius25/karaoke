@@ -5,6 +5,7 @@ from PyQt5.QtCore import Qt, QThread
 from PyQt5.QtWidgets import QMainWindow, QDesktopWidget, QWidget, QFileDialog, QSizePolicy
 
 from src import Signals
+from src.filebrowser import FileBrowser
 from src.state import State
 
 
@@ -42,7 +43,7 @@ class Karaoke(QWidget):
         :param state: State
         """
         super().__init__(parent)
-        uic.loadUi("src/karaoke.ui", self)
+        uic.loadUi("ui/karaoke.ui", self)
 
         self.signals = Signals.Signals()
         self.signals.need_sentences.connect(self.show_sentences)
@@ -63,12 +64,11 @@ class Karaoke(QWidget):
         Открывает просмотрщик файлов и запускает поток
         """
         self.clear()
-        file = QFileDialog.getOpenFileName(
-            self, "Открыть .kar файл", "", "Караоке (*.kar)"
-        )[0]
-        if not file:
+        fb = FileBrowser(self.state, "/home/vladius")
+        fb.exec()
+        if not self.state.file:
             return
-        self.state.run(file)
+        self.state.run()
         self.title_label.setText(self.state.track_name)
         self.thread = Thread(self.state, self.signals)
         self.thread.start()
@@ -77,6 +77,7 @@ class Karaoke(QWidget):
         """
         Приводит приложение в стартовое состояние
         """
+        self.state.file = None
         self.lyricsLabel.setText("")
         self.title_label.setText("Ничего не играет")
         self.state.stop()
