@@ -6,7 +6,6 @@ from PyQt5.QtWidgets import (
     QMainWindow,
     QDesktopWidget,
     QWidget,
-    QFileDialog,
     QSizePolicy,
 )
 
