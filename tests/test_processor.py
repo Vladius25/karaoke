@@ -37,7 +37,7 @@ class ProcessorTest(unittest.TestCase):
             os.remove("file.txt")
 
     def test_is_midi_file(self):
-        self.assertTrue(is_midi_file("testing.kar"))
+        self.assertTrue(is_midi_file(self.TESTDATA))
         with open("file.txt", "wb") as f:
             f.write(b"\xFF\x01")
         self.assertFalse(is_midi_file("file.txt"))
