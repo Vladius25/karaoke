@@ -37,10 +37,11 @@ class Karaoke(QWidget):
     UI подгружается из karaoke.ui
     """
 
-    def __init__(self, parent, state):
+    def __init__(self, parent, state, default_path):
         """
         :param parent: QMainWindow
         :param state: State
+        :param default_path: str
         """
         super().__init__(parent)
         uic.loadUi("ui/karaoke.ui", self)
@@ -50,6 +51,7 @@ class Karaoke(QWidget):
         self.signals.need_word_highlight.connect(self.highlight_word)
 
         self.state = state
+        self.default_path = default_path
 
         self.open.setSizePolicy(QSizePolicy.MinimumExpanding, QSizePolicy.MinimumExpanding)
         self.verticalLayout.setAlignment(Qt.AlignHCenter)
@@ -64,7 +66,7 @@ class Karaoke(QWidget):
         Открывает просмотрщик файлов и запускает поток
         """
         self.clear()
-        fb = FileBrowser(self.state, "/home/vladius")
+        fb = FileBrowser(self.state, self.default_path)
         fb.exec()
         if not self.state.file:
             return
@@ -106,11 +108,11 @@ class KaraokeWindow(QMainWindow):
     Окно приложения
     """
 
-    def __init__(self):
+    def __init__(self, default_path):
         super().__init__()
 
         self.state = State()
-        self.karaoke = Karaoke(self, self.state)
+        self.karaoke = Karaoke(self, self.state, default_path)
         self.initUI()
 
     def initUI(self):
