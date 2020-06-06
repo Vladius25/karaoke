@@ -5,7 +5,7 @@ from src.processor import get_syllable, get_ticks, get_ticks_before_lyrics, is_m
 
 
 class ProcessorTest(unittest.TestCase):
-    TESTDATA = os.path.join(os.path.dirname(__file__), 'testing.kar')
+    TESTDATA = os.path.join(os.path.dirname(__file__), "testing.kar")
 
     def tearDown(self):
         if os.path.exists("file.txt"):
@@ -20,7 +20,7 @@ class ProcessorTest(unittest.TestCase):
             f.write(b"\x02\xFF\x58\x67")
         with open("file.txt", "rb") as f:
             syl = get_syllable(f)
-            self.assertEqual('яX', syl)
+            self.assertEqual("яX", syl)
 
     def test_get_ticks(self):
         with open("file.txt", "wb") as f:

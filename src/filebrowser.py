@@ -128,4 +128,3 @@ class FileBrowser(QDialog):
         msgBox = QMessageBox()
         msgBox.setText("\n".join(text))
         msgBox.exec()
-

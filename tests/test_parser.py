@@ -5,7 +5,7 @@ from src.parser import Parser
 
 
 class ProcessorTest(unittest.TestCase):
-    TESTDATA = os.path.join(os.path.dirname(__file__), 'testing.kar')
+    TESTDATA = os.path.join(os.path.dirname(__file__), "testing.kar")
 
     def setUp(self):
         with open(self.TESTDATA, "rb") as f:
@@ -26,12 +26,16 @@ class ProcessorTest(unittest.TestCase):
 
         result = self.parser.make_words_with_timings()
 
-        self.assertEqual([('12 ', 3), ('/34 ', 7)], result)
+        self.assertEqual([("12 ", 3), ("/34 ", 7)], result)
 
     def test_split_words_by_sentences(self):
-        result = self.parser.split_words_by_sentences([('/12', 3), ('34 ', 7), ('/33', 8), ('22', 90)])
-        self.assertEqual([[('12', 3), ('34', 7)], [('33', 8), ('22', 90)]], result)
+        result = self.parser.split_words_by_sentences(
+            [("/12", 3), ("34 ", 7), ("/33", 8), ("22", 90)]
+        )
+        self.assertEqual([[("12", 3), ("34", 7)], [("33", 8), ("22", 90)]], result)
 
     def test_make_sentences(self):
-        result = self.parser.make_sentences([[('12', 3), ('34', 7)], [('33', 8), ('22', 90)]])
-        self.assertEqual(['12 34 ', '33 22 '], result)
+        result = self.parser.make_sentences(
+            [[("12", 3), ("34", 7)], [("33", 8), ("22", 90)]]
+        )
+        self.assertEqual(["12 34 ", "33 22 "], result)

@@ -2,7 +2,13 @@ from time import sleep
 
 from PyQt5 import uic
 from PyQt5.QtCore import Qt, QThread
-from PyQt5.QtWidgets import QMainWindow, QDesktopWidget, QWidget, QFileDialog, QSizePolicy
+from PyQt5.QtWidgets import (
+    QMainWindow,
+    QDesktopWidget,
+    QWidget,
+    QFileDialog,
+    QSizePolicy,
+)
 
 from src import Signals
 from src.filebrowser import FileBrowser
@@ -53,7 +59,9 @@ class Karaoke(QWidget):
         self.state = state
         self.default_path = default_path
 
-        self.open.setSizePolicy(QSizePolicy.MinimumExpanding, QSizePolicy.MinimumExpanding)
+        self.open.setSizePolicy(
+            QSizePolicy.MinimumExpanding, QSizePolicy.MinimumExpanding
+        )
         self.verticalLayout.setAlignment(Qt.AlignHCenter)
         self.open.clicked.connect(self.start)
         self.setFocusPolicy(Qt.StrongFocus)
