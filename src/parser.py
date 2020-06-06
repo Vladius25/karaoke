@@ -1,7 +1,5 @@
 import re
 
-import mido
-
 from src.processor import get_ticks_before_lyrics, get_syllable, get_ticks
 
 
