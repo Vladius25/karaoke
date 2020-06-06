@@ -81,7 +81,7 @@
         <enum>Qt::LeftToRight</enum>
        </property>
        <property name="styleSheet">
-        <string notr="true"/>
+        <string notr="true">QPushButton { background: #333; color: white }</string>
        </property>
        <property name="text">
         <string>Открыть</string>
