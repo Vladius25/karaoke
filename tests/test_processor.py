@@ -5,12 +5,14 @@ from src.processor import get_syllable, get_ticks, get_ticks_before_lyrics
 
 
 class ProcessorTest(unittest.TestCase):
+    TESTDATA = os.path.join(os.path.dirname(__file__), 'testing.kar')
+
     def tearDown(self):
         if os.path.exists("file.txt"):
             os.remove("file.txt")
 
     def test_get_ticks_before_lyrics(self):
-        ticks = get_ticks_before_lyrics("testing.kar")
+        ticks = get_ticks_before_lyrics(self.TESTDATA)
         self.assertEqual(24, ticks)
 
     def test_get_syllable(self):
@@ -26,3 +28,5 @@ class ProcessorTest(unittest.TestCase):
         with open("file.txt", "rb") as f:
             num = get_ticks(f)
             self.assertEqual(264, num)
+        if os.path.exists("file.txt"):
+            os.remove("file.txt")

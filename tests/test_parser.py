@@ -2,12 +2,13 @@ import os
 import unittest
 
 from src.parser import Parser
-from src.processor import get_syllable, get_ticks, get_ticks_before_lyrics
 
 
 class ProcessorTest(unittest.TestCase):
+    TESTDATA = os.path.join(os.path.dirname(__file__), 'testing.kar')
+
     def setUp(self):
-        with open("testing.kar", "rb") as f:
+        with open(self.TESTDATA, "rb") as f:
             self.parser = Parser(f)
 
     def test_remove_comments(self):
