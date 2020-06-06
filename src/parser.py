@@ -42,7 +42,9 @@ class Parser:
                 data = f.read(1)
                 if data == b"\x01":
                     self.syllables.append(get_syllable(f))
-                    self.delta_times.append(tempo * ticks / ticks_per_beat / 1000000)
+                    self.delta_times.append(
+                        tempo * ticks / ticks_per_beat / 1000000
+                    )
                     ticks = get_ticks(f)
                 elif data == b"\x51" and f.read(1) == b"\x03":
                     tempo = int.from_bytes(f.read(3), "big")

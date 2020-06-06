@@ -1,7 +1,12 @@
 import os
 import unittest
 
-from src.processor import get_syllable, get_ticks, get_ticks_before_lyrics, is_midi_file
+from src.processor import (
+    get_syllable,
+    get_ticks,
+    get_ticks_before_lyrics,
+    is_midi_file,
+)
 
 
 class ProcessorTest(unittest.TestCase):

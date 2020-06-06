@@ -106,7 +106,9 @@ class Karaoke(QWidget):
         :param word: str
         """
         text = self.lyricsLabel.text()
-        text = text.replace(word, '<font color="#AE5D5D"; >{}</font>'.format(word))
+        text = text.replace(
+            word, '<font color="#AE5D5D"; >{}</font>'.format(word)
+        )
         self.lyricsLabel.setText(text)
 
 
@@ -129,7 +131,9 @@ class KaraokeWindow(QMainWindow):
         self.setCentralWidget(self.karaoke)
 
         self.setObjectName("window")
-        self.setStyleSheet("#window { background-image: url(images/background.jpg); }")
+        self.setStyleSheet(
+            "#window { background-image: url(images/background.jpg); }"
+        )
         self.setWindowTitle("Караоке")
         self.resize(600, 600)
         self.center()
@@ -142,5 +146,6 @@ class KaraokeWindow(QMainWindow):
         screen = QDesktopWidget().screenGeometry()
         size = self.geometry()
         self.move(
-            (screen.width() - size.width()) / 2, (screen.height() - size.height()) / 2
+            (screen.width() - size.width()) / 2,
+            (screen.height() - size.height()) / 2,
         )

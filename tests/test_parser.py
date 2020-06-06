@@ -32,7 +32,9 @@ class ProcessorTest(unittest.TestCase):
         result = self.parser.split_words_by_sentences(
             [("/12", 3), ("34 ", 7), ("/33", 8), ("22", 90)]
         )
-        self.assertEqual([[("12", 3), ("34", 7)], [("33", 8), ("22", 90)]], result)
+        self.assertEqual(
+            [[("12", 3), ("34", 7)], [("33", 8), ("22", 90)]], result
+        )
 
     def test_make_sentences(self):
         result = self.parser.make_sentences(

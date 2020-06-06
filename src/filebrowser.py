@@ -71,7 +71,9 @@ class FileBrowser(QDialog):
         """
         Выбирает midi файл для вопсроизведения
         """
-        path = self.get_path() if not self.last_selected else self.last_selected
+        path = (
+            self.get_path() if not self.last_selected else self.last_selected
+        )
         if not self.check_path(path):
             return
         self.state.file = path
@@ -120,7 +122,9 @@ class FileBrowser(QDialog):
         """
         Открывает диалоговое окно с тектом песни
         """
-        path = self.get_path() if not self.last_selected else self.last_selected
+        path = (
+            self.get_path() if not self.last_selected else self.last_selected
+        )
         if not self.check_path(path):
             return
         parser = Parser(path)
