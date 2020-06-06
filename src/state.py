@@ -24,7 +24,14 @@ class State:
         self.words_with_timings, self.sentences = parser.parse()
 
     def play(self, file):
+        """
+        Проигрывает музыку
+        :param file: str
+        """
         self.audio.play(file)
 
     def stop(self):
+        """
+        Останавлиает музыку
+        """
         self.audio.stop()

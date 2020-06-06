@@ -11,12 +11,19 @@ from src.state import State
 
 
 class Thread(QThread):
+    """
+    Класс потока для управлением отображения текста песни
+    """
+
     def __init__(self, state, signal):
         super().__init__()
         self.state = state
         self.signal = signal
 
     def run(self):
+        """
+        Запускает поток, выводящий текст по таймингам
+        """
         for i, sentence in enumerate(self.state.sentences):
             self.signal.need_sentences.emit(sentence)
             for word, time in self.state.words_with_timings[i]:
@@ -26,7 +33,16 @@ class Thread(QThread):
 
 
 class Karaoke(QWidget):
+    """
+    Основный виджет, на котором все отображается
+    UI подгружается из karaoke.ui
+    """
+
     def __init__(self, parent, state):
+        """
+        :param parent: QMainWindow
+        :param state: State
+        """
         super().__init__(parent)
         uic.loadUi("src/karaoke.ui", self)
 
@@ -44,6 +60,10 @@ class Karaoke(QWidget):
         self.thread = None
 
     def start(self):
+        """
+        Срабатывает при нажатии кнопки
+        Открывает просмотрщик файлов и запускает поток
+        """
         self.clear()
         file = QFileDialog.getOpenFileName(
             self, "Открыть .kar файл", "", "Караоке (*.kar)"
@@ -56,6 +76,9 @@ class Karaoke(QWidget):
         self.thread.start()
 
     def clear(self):
+        """
+        Приводит приложение в стартовое состояние
+        """
         self.lyricsLabel.setText("")
         self.title_label.setText("Ничего не играет")
         self.state.stop()
@@ -63,15 +86,27 @@ class Karaoke(QWidget):
             self.thread.terminate()
 
     def show_sentences(self, sentence):
+        """
+        Отображет текст на экране
+        :param sentence: str
+        """
         self.lyricsLabel.setText(sentence)
 
     def highlight_word(self, word):
+        """
+        Меняет цвет нужного слова
+        :param word: str
+        """
         text = self.lyricsLabel.text()
         text = text.replace(word, '<font color="#AE5D5D"; >{}</font>'.format(word))
         self.lyricsLabel.setText(text)
 
 
 class KaraokeWindow(QMainWindow):
+    """
+    Окно приложения
+    """
+
     def __init__(self):
         super().__init__()
 
@@ -80,6 +115,9 @@ class KaraokeWindow(QMainWindow):
         self.initUI()
 
     def initUI(self):
+        """
+        Создает окно
+        """
         self.setCentralWidget(self.karaoke)
 
         self.setObjectName("window")
@@ -90,6 +128,9 @@ class KaraokeWindow(QMainWindow):
         self.show()
 
     def center(self):
+        """
+        Помещает окно в центр экрана
+        """
         screen = QDesktopWidget().screenGeometry()
         size = self.geometry()
         self.move(

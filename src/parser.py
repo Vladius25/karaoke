@@ -6,6 +6,10 @@ from src.processor import get_ticks_before_lyrics, get_syllable, get_ticks
 
 
 class Parser:
+    """
+    Класс для парсинга midi файла
+    """
+
     def __init__(self, file):
         self.file = file
         self.syllables = []
